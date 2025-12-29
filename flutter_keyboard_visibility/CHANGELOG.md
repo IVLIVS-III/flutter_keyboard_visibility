@@ -1,3 +1,6 @@
+## [7.1.0] - December 29, 2025
+* Updated the web implementation to support wasm.
+
 ## [7.0.1] - August 23, 2026
 
 * Fixed `IgnoreKeyboardDismiss` so taps within its subtree keep a text field focused on desktop and for mouse input on mobile.

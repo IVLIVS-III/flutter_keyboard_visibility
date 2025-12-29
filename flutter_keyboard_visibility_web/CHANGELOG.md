@@ -1,3 +1,7 @@
+## [3.1.0] - December 29, 2025
+
+* Migrated to `package:web` and `dart:js_interop` for wasm support.
+
 ## [3.0.0] - July 27, 2026
 
 * Replaced `dart:html` with `package:web` for WebAssembly compatibility.
