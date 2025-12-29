@@ -3,14 +3,14 @@ import 'dart:js_interop';
 
 import 'package:flutter_keyboard_visibility_platform_interface/flutter_keyboard_visibility_platform_interface.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'package:web/web.dart' as html show window, Navigator;
+import 'package:web/web.dart' as web show window, Navigator;
 
 /// The web implementation of the [FlutterKeyboardVisibilityPlatform] of the
 /// FlutterKeyboardVisibility plugin.
-class FlutterKeyboardVisibilityPluginWeb
+class FlutterKeyboardVisibilityPlugin
     extends FlutterKeyboardVisibilityPlatform {
-  /// Constructs a [FlutterKeyboardVisibilityPluginWeb].
-  FlutterKeyboardVisibilityPluginWeb(html.Navigator navigator);
+  /// Constructs a [FlutterKeyboardVisibilityPlugin].
+  FlutterKeyboardVisibilityPlugin(web.Navigator navigator);
 
   static final _onChangeController = StreamController<bool>();
   static final _onChange = _onChangeController.stream.asBroadcastStream();
@@ -23,13 +23,13 @@ class FlutterKeyboardVisibilityPluginWeb
   /// platform with an instance of the plugin for the web.
   static void registerWith(Registrar registrar) {
     FlutterKeyboardVisibilityPlatform.instance =
-        FlutterKeyboardVisibilityPluginWeb(html.window.navigator);
+        FlutterKeyboardVisibilityPlugin(web.window.navigator);
 
     // Initialize known height
     _knownHeight = _getHeight();
 
     // Primarily use MediaQueryList to listen for orientation changes
-    final mediaQueryList = html.window.matchMedia('(orientation: portrait)');
+    final mediaQueryList = web.window.matchMedia('(orientation: portrait)');
     mediaQueryList.addEventListener(
         'change', (() => _updateOrientation(mediaQueryList.matches)).toJS);
     // Fallback to the deprecated addListener for browsers that do not support
@@ -37,16 +37,16 @@ class FlutterKeyboardVisibilityPluginWeb
     mediaQueryList
         .addListener((() => _updateOrientation(mediaQueryList.matches)).toJS);
     // Fallback to 'orientationchange' listener on the window object
-    html.window.addEventListener(
+    web.window.addEventListener(
         'orientationchange',
         () {
-          final angle = html.window.orientation;
+          final angle = web.window.orientation;
           final isPortrait = angle % 180 == 0;
           _updateOrientation(isPortrait);
         }.toJS);
 
     // Listen for visualViewport resize events
-    html.window.visualViewport?.addEventListener(
+    web.window.visualViewport?.addEventListener(
         'resize',
         () {
           final newHeight = _getHeight();
@@ -56,10 +56,10 @@ class FlutterKeyboardVisibilityPluginWeb
     // Fallback to 'resize' listener on the window object
     // This is a fallback for browsers that do not support visualViewport
     // and also for orientation changes not detected by MediaQueryList
-    html.window.addEventListener(
+    web.window.addEventListener(
         'resize',
         () {
-          final isPortrait = html.window.innerHeight > html.window.innerWidth;
+          final isPortrait = web.window.innerHeight > web.window.innerWidth;
           _updateOrientation(isPortrait);
           final newHeight = _getHeight();
           _checkKeyboardVisibility(newHeight);
@@ -78,8 +78,8 @@ class FlutterKeyboardVisibilityPluginWeb
   }
 
   static double _getHeight() {
-    final vvh = html.window.visualViewport?.height;
-    final vh = html.window.innerHeight;
+    final vvh = web.window.visualViewport?.height;
+    final vh = web.window.innerHeight;
     return vvh ?? vh.toDouble();
   }
 

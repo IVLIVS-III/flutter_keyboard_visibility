@@ -14,7 +14,7 @@ flutter:
   plugin:
     platforms:
       web:
-        pluginClass: FlutterKeyboardVisibilityPluginWeb
+        pluginClass: FlutterKeyboardVisibilityPlugin
         fileName: flutter_keyboard_visibility_web.dart
 
 dependencies:
